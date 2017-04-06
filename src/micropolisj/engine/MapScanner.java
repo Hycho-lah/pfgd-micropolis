@@ -214,8 +214,13 @@ class MapScanner extends TileBehavior
 	{
 		//Very basic building functionality. Checks for power and does "repair"
 		boolean powerOn = checkZonePower();
-		if ((city.cityTime % 8) == 0) {
+		city.themeParkCount++;
+		if ((city.cityTime % 16) == 0) {
 			repairZone(THEMEPARK, 4);
+		}
+		if (powerOn)
+		{
+			//add in behavior
 		}
 	}
 

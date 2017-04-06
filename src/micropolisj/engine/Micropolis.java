@@ -121,6 +121,7 @@ public class Micropolis
 	int policeCount;
 	int fireStationCount;
 	int stadiumCount;
+	int themeParkCount;
 	int coalCount;
 	int nuclearCount;
 	int seaportCount;
@@ -535,6 +536,7 @@ public class Micropolis
 		fireStationCount = 0;
 		stadiumCount = 0;
 		coalCount = 0;
+		themeParkCount = 0;
 		nuclearCount = 0;
 		seaportCount = 0;
 		airportCount = 0;
@@ -650,7 +652,7 @@ public class Micropolis
 			fireAnalysis();
 			doDisasters();
 			break;
-
+		
 		default:
 			throw new Error("unreachable");
 		}
@@ -2623,6 +2625,12 @@ public class Micropolis
 		case 63:
 			if (trafficAverage > 60) {
 				sendMessage(MicropolisMessage.HIGH_TRAFFIC);
+			}
+			break;
+		case 64: 
+			resCap = (resPop > 800 && themeParkCount == 0);
+			if (resCap) {
+				sendMessage(MicropolisMessage.NEED_THEMEPARK);
 			}
 			break;
 		default:
