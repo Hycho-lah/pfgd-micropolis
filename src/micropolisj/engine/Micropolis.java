@@ -609,11 +609,11 @@ public class Micropolis
 				}
 				//Activate theme park cycle every June.
 				if ((cityTime % (CENSUSRATE*6) == 0) && (cityTime % (CENSUSRATE*12) != 0)){
-				themeParkCycle = true; 
-				collectTax();	
-				themeParkCycle = false;
+					themeParkCycle = true; 
+					collectTax();	
+					themeParkCycle = false;
 				}
-
+			
 				fireCensusChanged();
 			}
 
