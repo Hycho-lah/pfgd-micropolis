@@ -122,6 +122,7 @@ public class Micropolis
 	int fireStationCount;
 	int stadiumCount;
 	int themeParkCount;
+	int themeParkActiveCount;
 	int coalCount;
 	int nuclearCount;
 	int seaportCount;
@@ -165,7 +166,6 @@ public class Micropolis
 	boolean indCap;  // industry demands sea port,  caps indValve at 0
 	int crimeRamp;
 	int polluteRamp;
-
 	//
 	// budget stuff
 	//
@@ -183,6 +183,8 @@ public class Micropolis
 
 	boolean newPower;
 
+	boolean themeParkCycle;//whether the Theme Park Cycle of income is active at the time
+	
 	int floodCnt; //number of turns the flood will last
 	int floodX;
 	int floodY;
@@ -537,6 +539,7 @@ public class Micropolis
 		stadiumCount = 0;
 		coalCount = 0;
 		themeParkCount = 0;
+		themeParkActiveCount = 0;
 		nuclearCount = 0;
 		seaportCount = 0;
 		airportCount = 0;
@@ -603,6 +606,11 @@ public class Micropolis
 
 				if (cityTime % (CENSUSRATE*12) == 0) {
 					takeCensus2();
+				}
+				if ((cityTime % (CENSUSRATE*6) == 0) && (cityTime % (CENSUSRATE*12) != 0)){
+				themeParkCycle = true;
+				collectTax();	
+				themeParkCycle = false;
 				}
 
 				fireCensusChanged();
@@ -1764,24 +1772,34 @@ public class Micropolis
 
 	void collectTax()
 	{
-		int revenue = budget.taxFund / TAXFREQ;
-		int expenses = -(budget.roadFundEscrow + budget.fireFundEscrow + budget.policeFundEscrow) / TAXFREQ;
+		if (themeParkCycle){
+			if(themeParkActiveCount>0){
+				cashFlow = themeParkActiveCount*8000;
+				spend(-cashFlow);
+			}
+		
+		}
+		
+		else{
+			int revenue = budget.taxFund / TAXFREQ;
+			int expenses = -(budget.roadFundEscrow + budget.fireFundEscrow + budget.policeFundEscrow) / TAXFREQ;
 
-		FinancialHistory hist = new FinancialHistory();
-		hist.cityTime = cityTime;
-		hist.taxIncome = revenue;
-		hist.operatingExpenses = expenses;
+			FinancialHistory hist = new FinancialHistory();
+			hist.cityTime = cityTime;
+			hist.taxIncome = revenue;
+			hist.operatingExpenses = expenses;
 
-		cashFlow = revenue - expenses;
-		spend(-cashFlow);
-
-		hist.totalFunds = budget.totalFunds;
-		financialHistory.add(0,hist);
-
-		budget.taxFund = 0;
-		budget.roadFundEscrow = 0;
-		budget.fireFundEscrow = 0;
-		budget.policeFundEscrow = 0;
+			cashFlow = revenue - expenses;
+			spend(-cashFlow);
+	
+			hist.totalFunds = budget.totalFunds;
+			financialHistory.add(0,hist);
+	
+			budget.taxFund = 0;
+			budget.roadFundEscrow = 0;
+			budget.fireFundEscrow = 0;
+			budget.policeFundEscrow = 0;
+		}
 	}
 
 	/** Annual maintenance cost of each police station. */
@@ -2557,9 +2575,16 @@ public class Micropolis
 			}
 			break;
 		case 26:
-			resCap = (resPop > 500 && stadiumCount == 0);
-			if (resCap) {
+			if(resPop > 500 && stadiumCount == 0){
+				resCap = true;
 				sendMessage(MicropolisMessage.NEED_STADIUM);
+			}
+			else if (resPop > 800 && themeParkCount == 0){ //message for need Theme Park
+				resCap = true;
+				sendMessage(MicropolisMessage.NEED_THEMEPARK);
+			}
+			else{
+				resCap = false;
 			}
 			break;
 		case 28:
@@ -2625,12 +2650,6 @@ public class Micropolis
 		case 63:
 			if (trafficAverage > 60) {
 				sendMessage(MicropolisMessage.HIGH_TRAFFIC);
-			}
-			break;
-		case 64: 
-			resCap = (resPop > 800 && themeParkCount == 0);
-			if (resCap) {
-				sendMessage(MicropolisMessage.NEED_THEMEPARK);
 			}
 			break;
 		default:

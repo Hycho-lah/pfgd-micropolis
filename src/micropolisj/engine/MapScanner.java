@@ -220,7 +220,7 @@ class MapScanner extends TileBehavior
 		}
 		if (powerOn)
 		{
-			//add in behavior
+		city.themeParkActiveCount++;
 		}
 	}
 
