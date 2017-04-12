@@ -121,8 +121,8 @@ public class Micropolis
 	int policeCount;
 	int fireStationCount;
 	int stadiumCount;
-	int themeParkCount;
-	int themeParkActiveCount;
+	int themeParkCount;//for counting the # of theme parks 
+	int themeParkActiveCount; // for counting the # of powered theme parks 
 	int coalCount;
 	int nuclearCount;
 	int seaportCount;
@@ -183,7 +183,7 @@ public class Micropolis
 
 	boolean newPower;
 
-	boolean themeParkCycle;//whether the Theme Park Cycle of income is active at the time
+	boolean themeParkCycle;//whether the Theme Park Cycle of income is active at the time - If not active then income would not come in. 
 	
 	int floodCnt; //number of turns the flood will last
 	int floodX;
@@ -607,8 +607,9 @@ public class Micropolis
 				if (cityTime % (CENSUSRATE*12) == 0) {
 					takeCensus2();
 				}
+				//Activate theme park cycle every June.
 				if ((cityTime % (CENSUSRATE*6) == 0) && (cityTime % (CENSUSRATE*12) != 0)){
-				themeParkCycle = true;
+				themeParkCycle = true; 
 				collectTax();	
 				themeParkCycle = false;
 				}
@@ -1772,6 +1773,7 @@ public class Micropolis
 
 	void collectTax()
 	{
+		//if theme Park cycle is active, add in $8000 of income for every active theme park.
 		if (themeParkCycle){
 			if(themeParkActiveCount>0){
 				cashFlow = themeParkActiveCount*8000;
@@ -2584,7 +2586,7 @@ public class Micropolis
 				sendMessage(MicropolisMessage.NEED_THEMEPARK);
 			}
 			else{
-				resCap = false;
+				resCap = false;//resCap is turned off when city does not demand stadium or theme park
 			}
 			break;
 		case 28:

@@ -53,7 +53,7 @@ class BuildingTool extends ToolStroke
 			return applyZone(eff, AIRPORT);
 			
 		case THEMEPARK:
-			return applyZone(eff, THEMEPARK); //If the tile we're applying is the NEW_BUILDING, use applyZone to place a NEW_BUILDING tile
+			return applyZone(eff, THEMEPARK); //a case for theme park
 
 		default:
 			// not expected

@@ -42,7 +42,7 @@ class MapScanner extends TileBehavior
 		STADIUM_FULL,
 		AIRPORT,
 		SEAPORT,
-		THEMEPARK; //Placeholder enum for new building. Change to building name if making a new building
+		THEMEPARK; //Theme Park Building name
 	}
 
 	@Override
@@ -86,7 +86,7 @@ class MapScanner extends TileBehavior
 			doSeaport();
 			return;
 		case THEMEPARK:
-			doThemePark(); //Call the NEW_BUILDING placeholder function
+			doThemePark(); //Calling the Theme Park Behavior Function
 			return;
 		default:
 			assert false;
@@ -208,19 +208,19 @@ class MapScanner extends TileBehavior
 		city.powerPlants.add(new CityLocation(xpos, ypos));
 	}
 	
-	//Placeholder for a new building
-	//Look to the other do<building name>() functions to guidance on what this function should do.
+	
+	//Theme Park Behavior 
 	void doThemePark()
 	{
 		//Very basic building functionality. Checks for power and does "repair"
 		boolean powerOn = checkZonePower();
 		city.themeParkCount++;
 		if ((city.cityTime % 16) == 0) {
-			repairZone(THEMEPARK, 4);
+			repairZone(THEMEPARK, 4);//based on stadium behavior 
 		}
 		if (powerOn)
 		{
-		city.themeParkActiveCount++;
+		city.themeParkActiveCount++; //if the theme park is powered, then count theme park as active. 
 		}
 	}
 

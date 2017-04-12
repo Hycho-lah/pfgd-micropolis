@@ -1009,13 +1009,13 @@
 957   misc_animation@0,2080
 958   misc_animation@0,2096
 959   misc_animation@0,2112
-# BEGIN NEW BUILDING #
+# BEGIN THEME PARK #
 960   theme_park@0,0            (conducts)
 961   theme_park@16,0           (conducts)
 962   theme_park@32,0           (conducts)
 963   theme_park@48,0           (conducts)
 964   theme_park@0,16           (conducts)
-965   theme_park@16,16    (zone)(conducts)(building=4x4)(behavior=THEMEPARK)(description=#28)(pollution=5)
+965   theme_park@16,16    (zone)(conducts)(building=4x4)(behavior=THEMEPARK)(description=#28)(pollution=20)
 966   theme_park@32,16          (conducts)
 967   theme_park@48,16          (conducts)
 968   theme_park@0,32           (conducts)
