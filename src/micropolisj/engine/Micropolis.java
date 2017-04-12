@@ -607,12 +607,36 @@ public class Micropolis
 				if (cityTime % (CENSUSRATE*12) == 0) {
 					takeCensus2();
 				}
-				//Activate theme park cycle every June.
-				if ((cityTime % (CENSUSRATE*6) == 0) && (cityTime % (CENSUSRATE*12) != 0)){
-					themeParkCycle = true; 
-					collectTax();	
+				//Activate theme park cycle every June --> this is now old unused code
+				//if ((cityTime % (CENSUSRATE*6) == 0) && (cityTime % (CENSUSRATE*12) != 0)){
+					//themeParkCycle = true; 
+					//collectTax();	
+					//themeParkCycle = false;
+				
+				// Theme Park Cycle is active from Jan-July, but not for the rest of the year 
+				if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*7) == 0){
 					themeParkCycle = false;
 				}
+				else if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*8) == 0){
+					themeParkCycle = false;
+				}
+				else if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*9) == 0){
+					themeParkCycle = false;
+				}
+				else if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*10) == 0){
+					themeParkCycle = false;
+				}
+				else if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*11) == 0){
+					themeParkCycle = false;
+				}
+				else if ((cityTime % (CENSUSRATE*12)) % (CENSUSRATE*12) == 0){
+					themeParkCycle = false;
+				}
+				else{
+					themeParkCycle = true;
+				}
+				collectTax();	
+				themeParkCycle = false;
 			
 				fireCensusChanged();
 			}
@@ -620,6 +644,7 @@ public class Micropolis
 			collectTaxPartial();
 
 			if (cityTime % TAXFREQ == 0) {
+				themeParkCycle = false;
 				collectTax();
 				evaluation.cityEvaluation();
 			}
@@ -1773,10 +1798,10 @@ public class Micropolis
 
 	void collectTax()
 	{
-		//if theme Park cycle is active, add in $8000 of income for every active theme park.
+		//if theme Park cycle is active, add in $2000 of income for every active theme park.
 		if (themeParkCycle){
 			if(themeParkActiveCount>0){
-				cashFlow = themeParkActiveCount*8000;
+				cashFlow = themeParkActiveCount*2000;
 				spend(-cashFlow);
 			}
 		
